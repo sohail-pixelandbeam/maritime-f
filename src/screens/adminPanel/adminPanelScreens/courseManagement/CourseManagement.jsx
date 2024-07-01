@@ -347,7 +347,7 @@ const CourseManagement = () => {
                     onEdit={() => handleEdit(e)}
                     onDelete={() => handleDelete(e?.course_id)}
                     onDetail={() => handleDetail(e)}
-                  // img={e?.image_url}
+                    img={e?.image_url}
                   />
                 </Grid>
               )
