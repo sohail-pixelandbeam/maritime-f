@@ -11,6 +11,8 @@ import Courses from '../screens/courses/Courses';
 import Jobs from '../screens/jobs/Jobs';
 import Trainings from '../screens/trainings/Trainings';
 import CardDetails from '../screens/cardDetails/CardDetails';
+import EmployerPanel from '../screens/employerPanel/EmployerPanel';
+import StudentPanel from '../screens/studentPanel/StudentPanel';
 
 
 
@@ -26,13 +28,15 @@ export default function AppRouter() {
                     <Route path='/Jobs' element={<Jobs />}></Route>
                     <Route path='/Trainings' element={<Trainings />}></Route>
                     <Route path='/Courses' element={<Courses />}></Route>
-                    <Route path='/CardDetails' element={<CardDetails/>}></Route>
+                    <Route path='/CardDetails' element={<CardDetails />}></Route>
                     <Route path='/SignIn' element={<SignIn />}></Route>
                     <Route path='/SignUp' element={<SignUp />}></Route>
                     <Route path='/AboutUs' element={<AboutUs />}></Route>
                     <Route path='AdminPanel/*' element={<AdminPanel />}></Route>
                     <Route path='UserPanel/*' element={<UserPanel />}></Route>
-                    <Route path='JobSeekerPanel/*' element={<JobSeekerPanel/>}></Route>
+                    <Route path='StudentPanel/*' element={<StudentPanel />}></Route>
+                    <Route path='EmployerPanel/*' element={<EmployerPanel />}></Route>
+                    <Route path='JobSeekerPanel/*' element={<JobSeekerPanel />}></Route>
                 </Routes>
             </BrowserRouter>
         </>

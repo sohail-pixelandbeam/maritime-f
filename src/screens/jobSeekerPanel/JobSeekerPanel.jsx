@@ -31,10 +31,6 @@ export default function JobSeekerPanel() {
             label: 'Jobs',
             to: 'Jobs',
         },
-        {
-            label: 'Job Applications',
-            to: 'JobApplication'
-        }
     ]
 
     const handleCloseSnack = () => {
@@ -139,6 +135,7 @@ export default function JobSeekerPanel() {
         setIsLoading(true);
         localStorage.removeItem("user");
         localStorage.removeItem("token");
+        localStorage.removeItem("dataDetails");
         setSnackMsg("Successfully logged Out");
         setOpenSnack(true);
         setSeverity('success')
@@ -196,9 +193,10 @@ export default function JobSeekerPanel() {
                         </div>
                         <div className="ap-header-right">
                             <div className="ap-header-profile"
-                            onClick={() => {
-                                setActiveScreen('Profile')
-                                navigate('JobSeekerProfile')}}
+                                onClick={() => {
+                                    setActiveScreen('Profile')
+                                    navigate('JobSeekerProfile')
+                                }}
                             >
                                 <div className="ap-header-profile-left">
                                     <div className='ap-header-profile-left-imgBox' >

@@ -120,6 +120,7 @@ export default function AdminPanel() {
         setIsLoading(true);
         localStorage.removeItem("user");
         localStorage.removeItem("token");
+        localStorage.removeItem("dataDetails");
         setSnackMsg("Successfully logged Out");
         setOpenSnack(true);
         setSeverity('success')
@@ -203,7 +204,7 @@ export default function AdminPanel() {
                         <Route path='UserManagement' element={<UserManagement />}></Route>
                         <Route path='CourseManagement' element={<CourseManagement />}></Route>
                         <Route path='TrainingManagement' element={<TrainingManagement />}></Route>
-                        <Route path='JobManagement' element={<JobManagement/>}></Route>
+                        <Route path='JobManagement' element={<JobManagement />}></Route>
                         <Route path='CardDetails' element={<CardDetails />}></Route>
                         <Route path='AdminProfile' element={<AdminProfile />}></Route>
                     </Routes>

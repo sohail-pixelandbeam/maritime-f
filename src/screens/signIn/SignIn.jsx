@@ -53,6 +53,10 @@ export default function SignIn() {
                             navigate('/adminPanel')
                         } else if (role == 'jobseeker' || role == 'job seeker') {
                             navigate('/JobSeekerPanel')
+                        } else if (role == 'employer' || role == 'Employer') {
+                            navigate('/EmployerPanel')
+                        } else if (role == 'student' || role == 'Student') {
+                            navigate('/StudentPanel')
                         }
                     }, 2000)
                 } else {

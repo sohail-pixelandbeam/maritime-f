@@ -1,99 +1,125 @@
-import React, { useEffect } from 'react'
-import logo from '../../assets/img/logo.png'
+import React, { useEffect, useState } from 'react'
 import NavBar from '../../components/navbar/Navbar'
 import Slider from '../../components/slider/Slider'
 import './Home.css'
-import hub from '../../assets/img/hub.jpeg'
-import career from '../../assets/img/career.jpeg'
-import jobPortal from '../../assets/img/jobPortal.jpeg'
-import excellence from '../../assets/img/excellence.jpeg'
-import excellence1 from '../../assets/img/excellence1.png'
-import support from '../../assets/img/support.jpeg'
-import resources from '../../assets/img/resources.jpeg'
 import { Grid } from '@mui/material'
 import Btn from '../../components/btn/Btn'
+import Snack from '../../components/snack/Snack'
+import Loader from '../../components/loader/Loader'
+import { useNavigate } from 'react-router-dom'
+import { getData } from '../../config/apiCalls'
+import JobCard from '../../components/jobCard/JobCard'
+import Card from '../../components/card/Card'
+import { isLoggedIn } from '../../utils/utils'
 
 
 
 
 export default function Home() {
+    let [courses, setCourses] = useState([]);
+    let [programs, setPrograms] = useState([]);
+    let [jobs, setJobs] = useState([]);
+    let [jobsToRender, setJobsToRender] = useState([]);
+    const navigate = useNavigate();
+
+    let [isLoading, setIsLoading] = useState(false);
+    let [openSnack, setOpenSnack] = useState(false);
+    let [severity, setSeverity] = useState('error')
+    let [snackMsg, setSnackMsg] = useState('');
+
+    const handleCloseSnack = () => {
+        setOpenSnack(false);
+        setSnackMsg('');
+        setSeverity('error');
+    }
+    const getjobs = () => {
+        setIsLoading(true)
+        getData(`jobs`).then((response) => {
+            if (response.success) {
+                setJobs(response?.data)
+                setJobsToRender(response?.data)
+                setIsLoading(false)
+            } else {
+                setSnackMsg(response.message);
+                setOpenSnack(true);
+                setIsLoading(false)
+            }
+        })
+            .catch((error) => {
+                setSnackMsg(error.message ?? "Network Error");
+                setOpenSnack(true);
+                setIsLoading(false)
+            });
+    }
+
+    useEffect(() => {
+        getjobs();
+    }, [])
+
+    // courses
+
+    const getCourses = () => {
+        setIsLoading(true)
+        getData(`courses`).then((response) => {
+            if (response.success) {
+                setCourses(response?.data)
+                setIsLoading(false)
+            } else {
+                setSnackMsg(response.message);
+                setOpenSnack(true);
+                setIsLoading(false)
+            }
+        })
+            .catch((error) => {
+                setSnackMsg(error.message ?? "Network Error");
+                setOpenSnack(true);
+                setIsLoading(false)
+            });
+    }
+
+    const handleDetail = (course) => {
+        navigate('/CardDetails', {
+            state: course
+        })
+    }
+
+    useEffect(() => {
+        getCourses();
+    }, [])
+
+    //Handle Enroll Now
+    const handleApply = (e) => {
+        const status = isLoggedIn();
+        if (!status) {
+            alert("Please Login your account.");
+            navigate('/SignIn')
+        }
+    }
 
 
-    const aboutItems = [
-        {
-            icon: excellence,
-            heading: 'Maritime Education Excellence',
-            description: 'Top-tier courses blending theory and hands-on experience for a robust educational foundation.'
-        },
-        {
-            icon: jobPortal,
-            heading: 'Job Portal Precision',
-            description: 'Navigate career waves seamlessly. Explore curated maritime job opportunities and connect with employers for a fulfilling career.'
-        },
-        {
-            icon: career,
-            heading: 'Personalized Career Counseling',
-            description: 'Tailored career counseling to align your skills with rewarding maritime opportunities.'
-        },
-        {
-            icon: hub,
-            heading: 'Industry Networking Hub',
-            description: 'Connect with professionals, attend events, and join forums for valuable maritime community connections.'
-        },
-    ]
-    const aboutSection3Items = [
-        {
-            heading: 'Cutting-Edge Learning',
-            description: "Experience excellence in maritime education with our state-of-the-art classrooms, simulation labs, and industry-relevant training equipment.",
-            bgColor: '#bdffb3',
-            borderColor: '#96FF44'
-        },
-        {
-            heading: '24/7 Job Assistance',
-            description: 'Receive round-the-clock support in your job search. Our dedicated team provides assistance with applications, resume building, and interview preparation.',
-            bgColor: '#d0efff',
-            borderColor: '#2A5DDE'
-        },
-        {
-            heading: 'Career Resources',
-            description: 'Access a wealth of career resources, from industry insights to resume templates, empowering you to make informed decisions about your maritime journey.',
-            bgColor: ' #ccceff',
-            borderColor: '#2B72C2'
-        },
-    ]
+    // trainigns 
+    const getPrograms = () => {
+        setIsLoading(true)
+        getData(`programs`).then((response) => {
+            if (response.success) {
+                setPrograms(response?.data);
+                setIsLoading(false);
+            } else {
+                setSnackMsg(response.message);
+                setOpenSnack(true);
+                setIsLoading(false)
+            }
+        })
+            .catch((error) => {
+                setSnackMsg(error.message ?? "Network Error");
+                setOpenSnack(true);
+                setIsLoading(false)
+            });
+    }
 
-    const courses = [
-        {
-            name: "BASIC TRAINING",
-            img: 'https://i0.wp.com/northeastmaritimeonline.com/wp-content/uploads/2022/08/Basic-Firefighting-3m-scaled.jpg?resize=1024%2C686&ssl=1',
-            description: 'This online program includes all required course theory through presentations, reference material, videos and quizzes in the subject areas of Basic Marine Firefighting, Personal Survival Techniques, Elementary First Aid and Personal Safety & Social Responsibility. This course is for individuals taking Basic Training for the first time.'
-        },
-        {
-            name: "SEARCH AND RESCUE (OPERATIONAL)",
-            img: 'https://i0.wp.com/northeastmaritimeonline.com/wp-content/uploads/2022/08/Search-Rescue-4m-scaled.jpg?resize=1024%2C686&ssl=1',
-            description: 'This Search and Rescue (Operational) course will provide students with the knowledge to coordinate search and rescue operations.'
-        },
-        {
-            name: "AUXILIARY SAIL",
-            img: 'https://i0.wp.com/northeastmaritimeonline.com/wp-content/uploads/2022/08/OUPV-2m-scaled.jpg?resize=1024%2C686&ssl=1',
-            description: 'For mariners who hold or are applying for an OUPV (Operator of Uninspected Passenger Vessel), Master 100 or Master 200 gross tons license to meet the current USCG examination requirements for a Sailing Endorsement per 46 CFR 11.401(d) for an Auxiliary Sail endorsement to be added to any national endorsement as Operator of Uninspected Passenger Vessels (OUPV), or Master or Master of less than 200 GRT (Gross Register Tons).'
-        },
-        {
-            name: "GLOBAL MARITIME DISTRESS AND SAFETY SYSTEM (GMDSS)",
-            img: 'https://i0.wp.com/northeastmaritimeonline.com/wp-content/uploads/2022/08/GMDSS-2m-scaled.jpg?resize=1024%2C686&ssl=1',
-            description: 'This GMDSS (Global Maritime Distress and Safety System) Course combines online simulations, animations, helpful explanations, and quizzes to make your training experience engaging and comprehensive. You will explore the functionality and use of all GMDSS components ranging from daily communication to emergency situations using our suite of HALO° simulators. All text passages include an audio component to assist ESL students.'
-        },
-        {
-            name: "METEOROLOGY (OPERATIONAL)",
-            img: 'https://i0.wp.com/northeastmaritimeonline.com/wp-content/uploads/2022/08/Meteorology-2m-scaled.jpg?resize=1024%2C686&ssl=1',
-            description: 'This online course provides students with knowledge, proficiency and understanding of the characteristics of various weather systems, reporting procedures, and recording systems. This course will satisfy the Basic Meteorology Training of STCW A-II/1.'
-        },
-        {
-            name: "SEARCH AND RESCUE (OPERATIONAL)",
-            img: 'https://i0.wp.com/northeastmaritimeonline.com/wp-content/uploads/2022/08/Search-Rescue-2m-scaled.jpg?resize=1024%2C686&ssl=1',
-            description: 'This Search and Rescue (Operational) course will provide students with the knowledge to coordinate search and rescue operations.'
-        },
-    ]
+    useEffect(() => {
+        getPrograms();
+    }, [])
 
     return (
         <div>
@@ -115,33 +141,24 @@ export default function Home() {
                     </Grid>
                     <div className="about-sec5-body">
                         <Grid container spacing={4}>
-                            {courses && courses.map((course, index) => {
+                            {courses && courses.map((e, i) => {
                                 return (
-                                    <Grid item sm={4} key={index} >
-                                        <div className="course-card" data-aos="zoom-in">
-                                            <img src={course.img} alt="" />
-                                            <div className="course-card-body">
-                                                <div className='course-card-heading' >{course.name}</div>
-                                                <div className="course-card-descripiton">
-                                                    {course.description.slice(0, 80)} . . .
-                                                </div>
-                                                <div className="course-card-btns-box">
-                                                    <Btn label='Enroll Now' className="course-card-btn" style={{ backgroundColor: 'green' }} />
-                                                    <Btn label='Check Details' className="course-card-btn" />
-                                                </div>
-                                            </div>
-
-                                        </div>
-
+                                    <Grid item key={i} md={4} sm={6} xs={12} data-aos='zoom-in'>
+                                        <Card
+                                            name={e?.course_name}
+                                            description={e?.description}
+                                            duration={e?.duaration}
+                                            onApply={() => handleApply(e)}
+                                            onDetail={() => handleDetail(e)}
+                                            img={e?.image_url}
+                                        />
                                     </Grid>
                                 )
                             })}
-
-
                         </Grid>
                     </div>
                     <div data-aos="fade-up">
-                        <Btn label="SHOW ALL COURSES" style={{ margin: '50px auto' }} />
+                        <Btn label="SHOW ALL COURSES" onClick={() => navigate('/Courses')} style={{ margin: '50px auto' }} />
                     </div>
                 </div>
             </section >
@@ -162,36 +179,60 @@ export default function Home() {
                     </Grid>
                     <div className="about-sec5-body">
                         <Grid container spacing={4}>
-                            {courses && courses.map((course, index) => {
+                            {programs && programs.map((e, i) => {
                                 return (
-                                    <Grid item sm={4} key={index}>
-                                        <div className="course-card" data-aos="zoom-in">
-                                            <img src={course.img} alt="" />
-                                            <div className="course-card-body">
-                                                <div className='course-card-heading' >{course.name}</div>
-                                                <div className="course-card-descripiton">
-                                                    {course.description.slice(0, 80)} . . .
-                                                </div>
-                                                <div className="course-card-btns-box">
-                                                    <Btn label='Enroll Now' className="course-card-btn" style={{ backgroundColor: 'green' }} />
-                                                    <Btn label='Check Details' className="course-card-btn" />
-
-                                                </div>
-                                            </div>
-
-                                        </div>
-
+                                    <Grid item key={i} md={4} sm={6} xs={12} data-aos='zoom-in'>
+                                        <Card
+                                            name={e?.program_name}
+                                            description={e?.description}
+                                            duration={e?.duaration}
+                                            onDetail={() => handleDetail(e)}
+                                            onApply={() => handleApply(e)}
+                                            img={e?.img_url}
+                                        />
                                     </Grid>
                                 )
                             })}
                         </Grid>
                     </div>
                     <div data-aos="fade-up">
-                        <Btn label="SHOW ALL TRAININGS" style={{ margin: '50px auto' }} />
+                        <Btn label="SHOW ALL TRAININGS" onClick={() => navigate('/Trainings')} style={{ margin: '50px auto' }} />
+                    </div>
+                </div>
+            </section >
+            <section>
+                <div className="about-sec-5" style={{ paddingBottom: '20px' }}>
+                    <div className="about-sec5-circle" data-aos="zoom-in"></div>
+                    <div className="about-sec5-body">
+                        <div className="heading1" style={{ margin: '40px 0px' }} >All Jobs</div>
+                        <Grid container spacing={4}>
+                            {jobsToRender && jobsToRender.map((e, i) => {
+                                return (
+                                    <Grid item key={i} xs={12} data-aos="zoom-in">
+                                        <JobCard
+                                            name={e?.job_title}
+                                            job_description={e?.job_job_description}
+                                            requirements={e?.requirements}
+                                            location={e?.location}
+                                            salary={e?.salary}
+                                            postingDate={e?.PostingDate}
+                                            expiryDate={e?.ExpiryDate}
+                                            onApply={() => handleApply(e)}
+                                        />
+                                    </Grid>
+                                )
+                            })}
+                        </Grid>
+                    </div>
+                    <div style={{ height: '30px' }} />
+                    <div data-aos="fade-up">
+                        <Btn label="SHOW ALL JOBSS" onClick={() => navigate('/Jobs')} style={{ margin: '50px auto' }} />
                     </div>
                 </div>
             </section >
             <div style={{ height: '30px' }} />
+            <Snack msg={snackMsg} open={openSnack} onClose={handleCloseSnack} severity={severity} />
+            <Loader isLoading={isLoading} />
         </div >
     )
 }

@@ -16,7 +16,7 @@ export default function JobCard({ name = 'default', description = 'default', req
         <Grid container spacing={1} >
           <Grid item sm={6} xs={12}>
             <div className="course-card-descripiton">
-              <b>Salary: </b> {salary }
+              <b>Salary: </b> {salary}
             </div>
           </Grid>
           <Grid item sm={6} xs={12}>
@@ -26,23 +26,23 @@ export default function JobCard({ name = 'default', description = 'default', req
           </Grid>
           <Grid item sm={6} xs={12}>
             <div className="course-card-descripiton">
-              <b>Posting Date </b> {postingDate }
+              <b>Posting Date </b> {postingDate}
             </div>
           </Grid>
           <Grid item sm={6} xs={12}>
             <div className="course-card-descripiton">
-              <b>Expiry Date </b> {expiryDate }
+              <b>Expiry Date </b> {expiryDate}
             </div>
           </Grid>
-          
+
         </Grid>
-        <div style={{marginTop:'10px'}} ></div>
+        <div style={{ marginTop: '10px' }} ></div>
         {showControls ? <div className="course-card-btns-box">
           <Btn label='Edit' onClick={onEdit} className="course-card-btn" />
           <Btn label='Delete' onClick={onDelete} className="course-card-btn" style={{ background: 'red' }} />
         </div> :
           <div className="course-card-btns-box">
-            <Btn label='Apply' className="course-card-btn" style={{ backgroundColor: 'green' }} />
+            <Btn label='Apply' onClick={onApply} className="course-card-btn" style={{ backgroundColor: 'green' }} />
           </div>}
       </div>
 

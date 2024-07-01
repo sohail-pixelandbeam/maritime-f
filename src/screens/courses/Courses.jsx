@@ -4,7 +4,7 @@ import { Grid } from '@mui/material'
 import Snack from '../../components/snack/Snack'
 import Loader from '../../components/loader/Loader'
 import { useNavigate } from 'react-router-dom'
-import { getData } from '../../config/apiCalls'
+import { getData, postData } from '../../config/apiCalls'
 import Card from '../../components/card/Card'
 import Footer from '../../components/footer/Footer'
 import { isLoggedIn } from '../../utils/utils'
@@ -61,21 +61,57 @@ export default function Courses() {
         if (!status) {
             alert("Please Login your account.");
             navigate('/SignIn')
+        } else {
+            submitApplication(e.course_id)
         }
     }
+
+    const submitApplication = (id) => {
+        const dataObj = {
+            std_id: 1,
+            course_id: id,
+        }
+        setIsLoading(true)
+
+        postData(`create_application/course/${id}/1`, dataObj).then((response) => {
+            if (response.success) {
+                setSnackMsg(response.message ?? response.msg);
+                setOpenSnack(true);
+                setSeverity('success')
+                setIsLoading(false)
+            } else {
+                console.log(response)
+                setSnackMsg(response.message);
+                setOpenSnack(true);
+                setIsLoading(false)
+            }
+        })
+            .catch((error) => {
+                console.log(error)
+                setSnackMsg(error.error ?? error.msg ?? "Network Error");
+                setOpenSnack(true);
+                setIsLoading(false)
+            });
+    }
+
+
+    const status = isLoggedIn();
 
 
 
 
     return (
         <div>
-            <NavBar />
+            {status !== true && <NavBar />}
+
             <section>
                 <div className="about-sec-5" style={{ paddingBottom: '20px' }}>
                     <div className="about-sec5-circle" data-aos="zoom-in"></div>
-                    <div style={{ height: '70px' }} />
+
 
                     <div className="about-sec5-body">
+                        <div className="heading1" style={{ margin: '40px 0px' }} >All  Courses</div>
+
                         <Grid container spacing={4}>
                             {courses && courses.map((e, i) => {
                                 return (
@@ -100,7 +136,8 @@ export default function Courses() {
                 </div>
             </section >
 
-            <Footer />
+            {status !== true && <Footer />}
+
             <Snack msg={snackMsg} open={openSnack} onClose={handleCloseSnack} severity={severity} />
             <Loader isLoading={isLoading} />
         </div >

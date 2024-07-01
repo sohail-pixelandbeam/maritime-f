@@ -88,7 +88,7 @@ export default function Slider() {
                         </div>
                         <div className="slide-text">Designed to equip you with the skills needed for a successful career at sea. From navigation to marine engineering, we've got you covered.</div>
                         <div className="slide-btns">
-                            <Btn label='Show Courses' className='slide-btn' />
+                            <Btn label='Show Courses' onClick={() => navigate('/Courses')} className='slide-btn' />
                         </div>
 
                     </div>
@@ -111,7 +111,7 @@ export default function Slider() {
                         </div>
                         <div className="slide-text">Explore the latest job openings in the maritime sector. Your next career adventure awaits – find the perfect job match on Maritime Education System & Job Portal</div>
                         <div className="slide-btns">
-                            <Btn label='Show Jobs' className='slide-btn' />
+                            <Btn label='Show Jobs' onClick={() => navigate('/Jobs')} className='slide-btn' />
                         </div>
                     </div>
                     <div className="slider-arrows">
